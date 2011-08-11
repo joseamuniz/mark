@@ -1,1 +1,25 @@
 This is the README file.
+
+
+Setting up an Eclipse project
+-----------------------------
+
+Prerequisites: Scala IDE and EGit plugins. (Check the Wiki for links.) 
+
+1. Navigate through File > Import > Git > Projects from Git. Click "Next".
+2. Click "Clone".
+3. Enter the following information:
+      URI: git+ssh://git@github.com/joseamuniz/mark.git
+      Host: github.com
+      Repository path: joseamuniz/mark.git
+      User: git
+   Click "Next".
+4. Enter your passphrase.
+5. Select master branch, then click "Next".
+6. Enter the destination directory of the project. For example:
+     <ECLIPSE_WORKSPACE_PATH>/mark
+   Click "Finish".
+7. Select the "mark" repository, then click "Next".
+8. Select "Import Existing Projects", then click "Finish".
+
+
