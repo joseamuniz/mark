@@ -9,7 +9,7 @@ Prerequisites: Scala IDE and EGit plugins. (Check the Wiki for links.)
 1. Navigate through File > Import > Git > Projects from Git. Click "Next".
 2. Click "Clone".
 3. Enter the following information:
-      URI: git+ssh://git@github.com/joseamuniz/mark.git
+      URI: http://git@github.com/joseamuniz/mark.git
       Host: github.com
       Repository path: joseamuniz/mark.git
       User: git
