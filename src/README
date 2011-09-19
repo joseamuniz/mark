@@ -1,2 +1,21 @@
-This is a temporary README file. Our source code goes
-under this directory...
+This is a brief description of each package. 
+
+com.mark.adt  - Basic datatypes used by all the codebase. 
+
+com.mark.data - Provides an abstraction to a grade database and means to load 
+				database from different source types (Excel, CSV, JSON, Google 
+				Docs, etc).
+				
+com.mark.learner - Classes that infer the grades each grader would give to 
+				   every student on each assignment.
+				   
+com.mark.similarity - Given a pair of learners, these classes compute a
+					  distance between them based on their grading-style 
+					  similarity. 
+					  
+com.mark.embedding - Given a set of learners and a similarity function between
+					 them, provides an approximate set of points in R^n that
+					 preserves the distances between each other. 
+
+com.mark.web - Set of RPC handlers to load and visualize grade databases 
+			   identified by a unique identifier. 
