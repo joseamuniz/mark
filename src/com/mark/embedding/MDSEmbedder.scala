@@ -1,5 +1,4 @@
 package com.mark.embedding
-import com.mark.similarity.SimilarityComparator
 
 /** 
  * Performs embedding using classical multidimensional scaling (MDS). 

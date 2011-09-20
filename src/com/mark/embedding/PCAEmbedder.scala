@@ -1,5 +1,4 @@
 package com.mark.embedding
-import com.mark.similarity.SimilarityComparator
 
 /** 
  * Performs embedding using the Principal Component Analysis (PCA) procedure. 
