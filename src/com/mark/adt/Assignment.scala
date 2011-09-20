@@ -1,6 +1,14 @@
 package com.mark.adt
 
 
+/**
+ * Assignment for a class that can be assigned a grade. This includes an exam,
+ * a problem-set, class participation, etc. 
+ * 
+ * @param name The name of the assignment
+ * @param maxScore The maximum possible score that can be given to this homework
+ * 
+ */
 class Assignment(name : String, maxScore : Integer) {
 	/* 
 	 * TODO (jmunizn) 

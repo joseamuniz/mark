@@ -1,18 +1,36 @@
 package com.mark.data
 import com.mark.adt._
 
+/**
+ * Reads the class gradebook from a CSV file encoded in UTF-8 format 
+ * with the following fields:
+ * 
+ * - Student Name
+ * - Grader Name
+ * - Assignment Name
+ * - Grade
+ * - Max Grade
+ * - Weight
+ * 
+ * The first row is reserved for the header. 
+ * 
+ */
 class CSVDataSource[M] extends GradeDataSource[M] {
  
   	def getGraders()  :  Set[Grader] = {
-  	  return null;
+	  throw new RuntimeException("getGraders not yet implemented"); 
   	}
 	
 	def getStudents() : Set[Student] = {
-	  return null;
+	  throw new RuntimeException("getStudents not yet implemented"); 
+
 	}
 	
-	def gradesBy(grader : Grader) : Map[(Student, Assignment), Mark] = { 
-	  return null;
+	def getGrade(grader : Grader, 
+				 student : Student, 
+				 assignment : Assignment ) : M = { 
+	  
+	  throw new RuntimeException("getGrade not yet implemented"); 
 	}
 
 }
