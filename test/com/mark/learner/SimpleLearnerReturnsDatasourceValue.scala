@@ -12,18 +12,17 @@ import com.mark.adt.Grader
 
 class SimpleLearnerReturnsDatasourceValue extends AssertionsForJUnit {
 
-  private var grader : Grader = _
+  private var grader: Grader = _
 
-  private var dataSource : GradeDataSource[Mark] = _
-  private var simpleLearner : SimpleLearner[Mark] = _
-  
+  private var dataSource: GradeDataSource[Mark] = _
+  private var simpleLearner: SimpleLearner[Mark] = _
+
   @Test def testReturnsDatasourceValue() {
     val map = this.simpleLearner.train(dataSource)
     assertNotNull(map)
-    
+
     var predictor = map.get(this.grader)
-    
-    
+
   }
 
   @Before def setUp() {
