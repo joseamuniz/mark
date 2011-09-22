@@ -15,8 +15,8 @@ import com.mark.learner.GraderPredictor
  * 
  * 
  */
-class CorrelationComparator {
+class CorrelationComparator[M] {
   
-  def distance(from : GraderPredictor, to: GraderPredictor) = 0;
+  def distance(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
 
 }

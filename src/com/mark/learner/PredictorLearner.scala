@@ -2,6 +2,7 @@ package com.mark.learner
 
 import com.mark.adt.Grader
 import com.mark.data.GradeDataSource
+import scala.collection.mutable.Map
 
 /** 
  * A PredictorLearner generates a GraderPredictor for each grader in some
@@ -14,5 +15,5 @@ import com.mark.data.GradeDataSource
  *  
  */
 trait PredictorLearner[M] { 
-	def train(ds : GradeDataSource[M]) : Map[Grader, GraderPredictor];
+	def train(ds : GradeDataSource[M]) : Map[Grader, GraderPredictor[M]]
 }
