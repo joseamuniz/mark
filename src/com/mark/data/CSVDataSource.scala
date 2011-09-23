@@ -17,20 +17,16 @@ import com.mark.adt._
  */
 class CSVDataSource[M] extends GradeDataSource[M] {
  
-  	def getGraders()  :  Set[Grader] = {
+  	def getGraders: Set[Grader] =
 	  throw new RuntimeException("getGraders not yet implemented"); 
-  	}
+  	
 	
-	def getStudents() : Set[Student] = {
+	def getStudents: Set[Student] =
 	  throw new RuntimeException("getStudents not yet implemented"); 
-
-	}
 	
 	def getGrade(grader : Grader, 
 				 student : Student, 
-				 assignment : Assignment ) : M = { 
-	  
+				 assignment : Assignment ) : M = 
 	  throw new RuntimeException("getGrade not yet implemented"); 
-	}
 
 }
