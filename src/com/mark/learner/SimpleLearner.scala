@@ -1,6 +1,7 @@
 package com.mark.learner
 
 import scala.collection.mutable.Map
+import scala.collection.mutable.HashMap
 
 import com.mark.adt.Assignment
 import com.mark.adt.Grader
@@ -27,15 +28,15 @@ import com.mark.data.GradeDataSource
 class SimpleLearner[M] extends PredictorLearner[M] {
 
   def train(ds: GradeDataSource[M]): Map[Grader, GraderPredictor[M]] = {
-    val map = Map[Grader, GraderPredictor[M]]()
-    ds.getGraders().foreach[GraderPredictor[M]](grader => createPredictor(grader, ds))
+    val map = HashMap[Grader, GraderPredictor[M]]()
+    (ds getGraders).foreach(grader => map += (grader -> createPredictor(grader, ds)))
     return map
   }
 
-  def createPredictor(grader: Grader, ds: GradeDataSource[M]): GraderPredictor[M] = {
+  private def createPredictor(grader: Grader, ds: GradeDataSource[M]): GraderPredictor[M] = {
     val predictor = new GraderPredictor[M] {
       override def predict(student: Student, assignment: Assignment): M = {
-        return ds.getGrade(grader, student, assignment)
+        return ds getGrade(grader, student, assignment)
       }
 
       override def distanceTo(predictor: GraderPredictor[M]): Int = {
