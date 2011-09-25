@@ -15,7 +15,7 @@ import com.mark.adt.Mark
  * variables.  
  * 
  */
-trait GraderPredictor[M] {
+trait GraderPredictor[M <: Mark] {
 
   /**
    * Returns the predicted mark for the given student on the given assignment. 
@@ -27,11 +27,4 @@ trait GraderPredictor[M] {
    */
   def predict(student : Student, assignment : Assignment) : M
   
-  /**
-   * Compares this graderpredictor with the specified graderpredictor for
-   * distance. This distance indicates how similar the graderpredictors are.
-   * 
-   * @param predictor the predictor to be compared
-   */
-  def distanceTo(predictor : GraderPredictor[M]) : Int
 }

@@ -15,7 +15,7 @@ import com.mark.adt._
  * TODO: Need to figure out the syntax to specify that Marker should actually be 
  * a subclass of com.mark.adt.Mark 
  */
-trait GradeDataSource[M] {
+trait GradeDataSource[M <: Mark] {
 
   /**
    * Returns a list of all the graders that have graded at least one
