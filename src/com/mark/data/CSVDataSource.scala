@@ -15,7 +15,7 @@ import com.mark.adt._
  * The first row is reserved for the header. 
  * 
  */
-class CSVDataSource[M] extends GradeDataSource[M] {
+class CSVDataSource[M <: Mark] extends GradeDataSource[M] {
  
   	def getGraders: Set[Grader] =
 	  throw new RuntimeException("getGraders not yet implemented"); 
