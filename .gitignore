@@ -1,2 +1,5 @@
 bin
 *.scala_dependencies
+out/*
+.idea/*
+intellij-.mark.iml
