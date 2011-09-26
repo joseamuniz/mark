@@ -2,11 +2,11 @@ package com.mark.learner
 
 import scala.collection.mutable.Map
 import scala.collection.mutable.HashMap
-
 import com.mark.adt.Assignment
 import com.mark.adt.Grader
 import com.mark.adt.Student
 import com.mark.data.GradeDataSource
+import com.mark.adt.Mark
 
 /**
  * A SimpleLearner does not perform any inferencing over the grades provided in
@@ -25,7 +25,7 @@ import com.mark.data.GradeDataSource
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[M] extends PredictorLearner[M] {
+class SimpleLearner[M <: Mark] extends PredictorLearner[M] {
 
   def train(ds: GradeDataSource[M]): Map[Grader, GraderPredictor[M]] = {
     val map = HashMap[Grader, GraderPredictor[M]]()
@@ -34,20 +34,13 @@ class SimpleLearner[M] extends PredictorLearner[M] {
   }
 
   private def createPredictor(grader: Grader, ds: GradeDataSource[M]): GraderPredictor[M] = {
-    val predictor = new GraderPredictor[M] {
+    new GraderPredictor[M] {
       override def predict(student: Student, assignment: Assignment): M = {
         ds getGrade (grader, student, assignment) match {
           case Some(grade) => grade;
           case None => throw new RuntimeException ("Unimplemented");
         }
       }
-
-      override def distanceTo(predictor: GraderPredictor[M]): Int = {
-        //TODO 
-        0
-      }
     }
-    predictor
   }
-
 }
