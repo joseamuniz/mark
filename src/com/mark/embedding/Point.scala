@@ -10,9 +10,10 @@ import com.mark.similarity._
  *
  */
 
-class Point[N : Numeric](val coordinates: List[N]) {
+class Point[N : Numeric](val args: N*) {
 
-  private val dim = coordinates size
+  private val dim = args.size
+  private val coordinates = args.toList
   private val num = implicitly[Numeric[N]]
 
   def distanceTo = {
