@@ -10,7 +10,7 @@ import com.mark.similarity._
  *
  */
 
-class Point[N : Numeric](val args: N*) {
+class Point[N : Numeric](args: N*) {
 
   private val dim = args.size
   private val coordinates = args.toList
@@ -40,4 +40,7 @@ class Point[N : Numeric](val args: N*) {
 
     distance(Point.this, _ : Point[N])
   }
+
+  override def toString =
+     "Point("+ ((coordinates foldLeft "") (_+_)) + ")";
 }
