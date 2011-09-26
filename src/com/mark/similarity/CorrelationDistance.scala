@@ -1,5 +1,6 @@
 package com.mark.similarity
 import com.mark.learner.GraderPredictor
+import com.mark.adt.Mark
 
 /**
  * Determines the distance between two GraderPredictors G(s,a) 
@@ -15,8 +16,9 @@ import com.mark.learner.GraderPredictor
  * 
  * 
  */
-class CorrelationComparator[M] {
+class CorrelationDistance[M <: Mark]
+  extends Distance[GraderPredictor[M], Int] {
   
-  def distance(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
+  def apply(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
 
 }
