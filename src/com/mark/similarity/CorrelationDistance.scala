@@ -16,9 +16,8 @@ import com.mark.adt.Mark
  * 
  * 
  */
-class CorrelationDistance[M <: Mark]
-  extends Distance[GraderPredictor[M], Int] {
+class CorrelationDistance[M <: Mark] {
   
-  def apply(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
+  def distance(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
 
 }

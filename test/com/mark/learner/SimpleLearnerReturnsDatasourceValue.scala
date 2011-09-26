@@ -12,7 +12,7 @@ import com.mark.adt.Grader
 
 class SimpleLearnerReturnsDatasourceValue extends AssertionsForJUnit {
 
-  private var grader: Grader = _
+  private val grader: Grader = _
 
   private var dataSource: GradeDataSource[Mark] = _
   private var simpleLearner: SimpleLearner[Mark] = _
