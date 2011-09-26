@@ -19,5 +19,5 @@ trait Mark {
   /**
    * Adds the int values of two marks
    */
-  def +(mark: Mark): Int = intValue + mark intValue
+  /* def +(mark: Mark): Int = intValue + mark intValue   */
 }

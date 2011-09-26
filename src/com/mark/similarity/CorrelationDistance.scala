@@ -16,7 +16,7 @@ import com.mark.adt.Mark
  * 
  * 
  */
-class CorrelationComparator[M <: Mark] {
+class CorrelationDistance[M <: Mark] {
   
   def distance(from : GraderPredictor[M], to: GraderPredictor[M]) = 0;
 
