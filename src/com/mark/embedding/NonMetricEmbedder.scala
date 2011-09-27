@@ -1,10 +1,13 @@
 package com.mark.embedding
 
+import com.mark.similarity.Distance
+
 /** 
  * Performs embedding using a non-metric embedder.
  */
-class NonMetricEmbedder[X, P] extends Embedder[X, P]{
+class NonMetricEmbedder[X,Y] extends Embedder[X,Y]{
 
-  def embed(points : Set[X], distance : (X,X) => Int) : Set[P] = null;
+  def embed(points : Set[X], distance : Distance[X, Y]) : Set[Point[Y]] =
+    null;
 
 }

@@ -5,4 +5,5 @@ package com.mark
   * similarity. 
   */
 package object similarity {
+
 }

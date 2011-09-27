@@ -1,5 +1,7 @@
 package com.mark.embedding
 
+import com.mark.similarity.Distance
+
 /**
  * An embedder maps a set of points {p_i} of type X  and a distance function
  * d(p_i, p_j) into a set of points {x_i} in T = R^n minimizing the objective 
@@ -10,7 +12,7 @@ package com.mark.embedding
  * Here, |x_i - x_j| represents the Euclidean distance between points i and j.
  *  
  */
-trait Embedder[X, T] {
+trait Embedder[X, Y] {
   
  
     /**
@@ -29,6 +31,6 @@ trait Embedder[X, T] {
      * 
      *  
      */
-	def embed(points : Set[X], distance : (X,X) => Int) : Set[T];
+	def embed(points : Set[X], distance : Distance[X,Y]) : Set[Point[Y]];
 
 }
