@@ -11,8 +11,8 @@ package com.mark.adt
  * @param scale The maximum score attainable in this assignment.
  */
 class RankMark extends Mark {
-  override def intValue = throw new RuntimeException("intValue not yet implemented");
+  override def intValue = throw new RuntimeException("intValue not yet implemented")
   override def stringValue =
-    throw new RuntimeException("stringValue not yet implemented");
+    throw new RuntimeException("stringValue not yet implemented")
 
 }

@@ -12,8 +12,8 @@ import com.mark.similarity._
 
 class Point[N : Numeric](args: N*) {
 
-  private val dim = args.size
   private val coordinates = args.toList
+  private val dim = args.size
   private val num = implicitly[Numeric[N]]
 
   def distanceTo = {
@@ -30,6 +30,13 @@ class Point[N : Numeric](args: N*) {
        *        = sqrt[(x1 - y1)^2 + (x2 - y2)^2 + ... + (xn - yn)^2]
        */
       def apply(origin: Point[N], dest: Point[N]): Double = {
+        if (origin == null || dest == null)
+          throw new IllegalArgumentException(
+           "distance() requires two non-null points")
+        if ((origin dim) != (dest dim))
+          throw new IllegalArgumentException(
+            "distance() requires two points of equal dimensions")
+
         math.sqrt(
             ((origin coordinates) zip (dest coordinates))
             .map({case (x, y) => math.pow(num.toDouble(num.minus(x,y)), 2)})
@@ -42,5 +49,7 @@ class Point[N : Numeric](args: N*) {
   }
 
   override def toString =
-     "Point("+ ((coordinates foldLeft "") (_+_)) + ")";
+      "Point(" + (coordinates mkString(", ")) + ")";
+
 }
+
