@@ -25,7 +25,10 @@ class CSVDataSource[M <: Mark] extends GradeDataSource[M] {
 	
 	def getStudents: Set[Student] =
 	  throw new RuntimeException("getStudents not yet implemented"); 
-	
+
+  def getAssignments: Set[Assignment] =
+    throw new RuntimeException("getAssignments not yet implemented")
+
 	def getGrade(grader : Grader, 
 				 student : Student, 
 				 assignment : Assignment ) : Option[M] =

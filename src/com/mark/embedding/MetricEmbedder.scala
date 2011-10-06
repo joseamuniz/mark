@@ -20,7 +20,7 @@ class MetricEmbedder[X] extends Embedder[X, Double] {
 
   /**
    * Converts a set of points into an bidimensional array of distances
-   *
+   *                                                                  ∑
    * TODO: Should this be made an implicit conversion too?
    */
   private def toArray(points: Set[X], distance: (X, X) => Double) =
