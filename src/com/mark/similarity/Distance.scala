@@ -11,7 +11,7 @@ package com.mark.similarity
  */
 
 trait Distance[X, Y] extends ((X,X) => Y) {
-    def apply(origin : X, dest : X) : Y;
+    def apply(origin: X, dest: X): Y
 }
 
 

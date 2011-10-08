@@ -13,7 +13,7 @@ import com.mark.adt._
 trait GradeDataSource[M <: Mark] {
 
   /**
-   * Returns a list of all the graders that have graded at least one
+   * Returns a set of all the graders that have graded at least one
    * assignment in this data source.
    *
    * @return A (non-null) set of graders.
@@ -21,12 +21,19 @@ trait GradeDataSource[M <: Mark] {
   def getGraders: Set[Grader]
 
   /**
-   * Returns a list of all the students that have at least one assignment
+   * Returns a set of all the students that have at least one assignment
    * graded in this data source.
    *
    * @return A (non-null) set of graders.
    */
   def getStudents: Set[Student]
+
+  /**
+   * Returns a set of all the assignments
+   *
+   * @return A (non-null) set of assignments
+   */
+  def getAssignments: Set[Assignment]
 
   /**
    * Returns the grade recorded for student by grader on assignment.

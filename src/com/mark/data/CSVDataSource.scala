@@ -24,15 +24,19 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
 
   private var graders = Set[Grader]()
   private var students = Set[Student]()
+  private var assignments = Set[Assignment]()
   private val scoreMap = mutable.Map[(Grader, Student, Assignment), String]()
   private val maxScoreMap = mutable.Map[(Grader, Student, Assignment), String]()
   private val weightMap = mutable.Map[(Grader, Student, Assignment), String]()
   private val graderSet = mutable.Set[Grader]()
   private val studentSet = mutable.Set[Student]()
+  private val assignmentSet = mutable.Set[Assignment]()
 
   def getGraders: Set[Grader] = graders
 	
 	def getStudents: Set[Student] = students
+
+  def getAssignments: Set[Assignment] = assignments
 
   def loadData(descriptor: GradeDataDescriptor): Unit = {
     descriptor match {
@@ -61,6 +65,7 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
     weightMap.clear()
     graderSet.clear()
     studentSet.clear()
+    assignmentSet.clear()
 
     while (row != null) {
       val rowData = fields zip row
@@ -75,6 +80,7 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
     // sets we just populated
     graders ++ graderSet
     students ++ studentSet
+    assignments ++ assignmentSet
 
     createMarks(
       Map[(Grader, Student, Assignment), String]() ++ scoreMap,
@@ -97,6 +103,7 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
 
     graderSet += key._1
     studentSet += key._2
+    assignmentSet += key._3
   }
 
   private def checkString(gradeData: GradeData, value: String): Unit = {
