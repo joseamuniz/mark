@@ -18,7 +18,7 @@ trait GradeDataSource[M <: Mark] {
    *
    * @return A (non-null) set of graders.
    */
-  def getGraders: Set[Grader];
+  def getGraders: Set[Grader]
 
   /**
    * Returns a list of all the students that have at least one assignment
@@ -26,7 +26,7 @@ trait GradeDataSource[M <: Mark] {
    *
    * @return A (non-null) set of graders.
    */
-  def getStudents: Set[Student];
+  def getStudents: Set[Student]
 
   /**
    * Returns the grade recorded for student by grader on assignment.
@@ -44,6 +44,11 @@ trait GradeDataSource[M <: Mark] {
    */
   def loadData(descriptor: GradeDataDescriptor): Unit
 
+
+  def createMarks(
+    scoreMap: Map[(Grader, Student, Assignment), String],
+    maxScoreMap: Map[(Grader, Student, Assignment), String],
+    weightMap: Map[(Grader, Student, Assignment), String]): Unit
 }
 
 /**
@@ -56,5 +61,6 @@ trait GradeDataDescriptor
  */
 object GradeData extends Enumeration {
   type GradeData = Value
-  val Student, Grader, Assignment, Mark, MaxScore, Weight = Value
+  val StudentData, GraderData, AssignmentData,
+    ScoreData, MaxScoreData, WeightData = Value
 }

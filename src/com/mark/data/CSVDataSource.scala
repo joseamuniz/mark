@@ -3,6 +3,8 @@ import com.mark.adt._
 import au.com.bytecode.opencsv.CSVReader
 import java.io.FileReader
 import com.mark.data.GradeData._
+import collection.immutable.Set
+import collection.mutable
 
 /**
  * Reads the class gradebook from a CSV file encoded in UTF-8 format 
@@ -18,18 +20,19 @@ import com.mark.data.GradeData._
  * The first row is reserved for the header. 
  * 
  */
-class CSVDataSource[M <: Mark] extends GradeDataSource[M] {
- 
-  def getGraders: Set[Grader] =
-	  throw new RuntimeException("getGraders not yet implemented");
+trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
+
+  private var graders = Set[Grader]()
+  private var students = Set[Student]()
+  private val scoreMap = mutable.Map[(Grader, Student, Assignment), String]()
+  private val maxScoreMap = mutable.Map[(Grader, Student, Assignment), String]()
+  private val weightMap = mutable.Map[(Grader, Student, Assignment), String]()
+  private val graderSet = mutable.Set[Grader]()
+  private val studentSet = mutable.Set[Student]()
+
+  def getGraders: Set[Grader] = graders
 	
-	def getStudents: Set[Student] =
-	  throw new RuntimeException("getStudents not yet implemented"); 
-	
-	def getGrade(grader : Grader, 
-				 student : Student, 
-				 assignment : Assignment ) : Option[M] =
-	  throw new RuntimeException("getGrade not yet implemented");
+	def getStudents: Set[Student] = students
 
   def loadData(descriptor: GradeDataDescriptor): Unit = {
     descriptor match {
@@ -46,70 +49,61 @@ class CSVDataSource[M <: Mark] extends GradeDataSource[M] {
     val header: Array[String] = reader.readNext()
     if (header == null) throw new RuntimeException("Input file is empty")
     // TODO: think about how to enforce/check the precense of header
-    var content: Array[String] = reader.readNext()
-    if (content == null) throw new RuntimeException("Input file " +
+    if (header.length != fields.length) throw new RuntimeException(
+      "Number of fields in the file header does not match the number " +
+        "of fields in the descriptor")
+    var row: Array[String] = reader.readNext()
+    if (row == null) throw new RuntimeException("Input file " +
       "does not contain data")
 
-    // TODO: what happens if fields.size is not equal to content.size ?
+    scoreMap.clear()
+    maxScoreMap.clear()
+    weightMap.clear()
+    graderSet.clear()
+    studentSet.clear()
 
-    while (content != null) {
-
-      var graderName: String = null
-      var studentName: String = null
-      var assignmentName: String = null
-      var assignmentMaxScore: Int = Int.MinValue
-      var markValue: Int = Int.MinValue
-
-      for (i <- 0 to fields.size) {
-        val dataType = fields(i)
-        val value: String = content(i)
-        dataType match {
-          case Grader => graderName = value
-          case Student => studentName = value
-          case Assignment => assignmentName = value
-          case MaxScore => assignmentMaxScore = value.toInt
-          case Mark => markValue = value.toInt
-          case _ => // else, do nothing
-        }
-      }
-
-      if (graderName == null
-        || studentName == null
-        || assignmentName == null
-        || assignmentMaxScore == Int.MinValue
-        || markValue == Int.MinValue) {
-
-        throw new IllegalArgumentException("Data file did not contain " +
-          "all necessary information")
-      }
-
-      checkString(graderName, "Grader name")
-      checkString(studentName, "Student name")
-      checkString(assignmentName, "Assignment name")
-      checkPositiveInt(assignmentMaxScore, "Assignment max score")
-      checkPositiveInt(markValue, "Mark value")
-
-      val grader: Grader = new Grader(graderName)
-      val student: Student = new Student(studentName)
-      val assign: Assignment = new Assignment(assignmentName, assignmentMaxScore)
-      //val mark: M = null
-
-      content = reader.readNext()
+    while (row != null) {
+      val rowData = fields zip row
+      rowData.foreach((checkString _).tupled)
+      retrieveData(rowData)
+      row = reader.readNext()
     }
 
     reader.close()
+
+    // create immutable sets of graders and students from the
+    // sets we just populated
+    graders ++ graderSet
+    students ++ studentSet
+
+    createMarks(
+      Map[(Grader, Student, Assignment), String]() ++ scoreMap,
+      Map[(Grader, Student, Assignment), String]() ++ maxScoreMap,
+      Map[(Grader, Student, Assignment), String]() ++ weightMap)
   }
 
-  private def checkString(s: String, name: String): Unit = {
-    if (s == null) throw new IllegalArgumentException(name +
-      " should not be null")
-    if (s.isEmpty) throw new IllegalArgumentException(name +
-      " should not be empty")
+  private def retrieveData(row: List[(GradeData, String)]): Unit = {
+
+    val data = mutable.Map[GradeData, String]()
+    row.foreach(value => data += value)
+
+    val key = (new Grader(data(GraderData)),
+      new Student(data(StudentData)),
+      new Assignment(data(AssignmentData)))
+
+    scoreMap put (key, data(ScoreData))
+    maxScoreMap put (key, data(MaxScoreData))
+    weightMap put (key, data(WeightData))
+
+    graderSet += key._1
+    studentSet += key._2
   }
 
-  private def checkPositiveInt(i: Int, name: String): Unit = {
-    if (i < 0) throw new IllegalArgumentException(name +
-      " should not be negative")
+  private def checkString(gradeData: GradeData, value: String): Unit = {
+    if (value == null) throw new IllegalArgumentException(
+      gradeData.toString + " should not be null")
+    if (value.isEmpty) throw new IllegalArgumentException(
+      gradeData.toString + " should not be empty")
   }
 }
 

@@ -9,7 +9,7 @@ package com.mark.adt
  * @param maxScore The maximum possible score that can be given to this homework
  * 
  */
-class Assignment(name : String, maxScore : Int) {
+class Assignment(name : String) {
 	/* 
 	 * TODO (jmunizn) 
 	 * 
