@@ -25,6 +25,7 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
   private var graders = Set[Grader]()
   private var students = Set[Student]()
   private var assignments = Set[Assignment]()
+
   private val scoreMap = mutable.Map[(Grader, Student, Assignment), String]()
   private val maxScoreMap = mutable.Map[(Grader, Student, Assignment), String]()
   private val weightMap = mutable.Map[(Grader, Student, Assignment), String]()
@@ -78,9 +79,9 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
 
     // create immutable sets of graders and students from the
     // sets we just populated
-    graders ++ graderSet
-    students ++ studentSet
-    assignments ++ assignmentSet
+    graders = Set[Grader]() ++ graderSet
+    students = Set[Student]() ++ studentSet
+    assignments = Set[Assignment]() ++ assignmentSet
 
     createMarks(
       Map[(Grader, Student, Assignment), String]() ++ scoreMap,

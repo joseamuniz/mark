@@ -18,4 +18,18 @@ class Assignment(name : String) {
 	 * assignments to their corresponding weights.  
 	 * 
 	 */
+
+  require(name != null)
+  require(name.length != 0)
+
+  def getName: String = name
+
+  override def toString: String = name
+
+  override def equals(that: Any): Boolean = {
+    that match {
+      case that: Assignment => this.getName.equals(that.getName)
+      case _ => false
+    }
+  }
 } 

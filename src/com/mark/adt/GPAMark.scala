@@ -15,4 +15,15 @@ class GPAMark(score: Int, scale: Int) extends Mark {
 
   override def intValue = score
   override def stringValue = score + "/" + scale
+
+  def getScale = scale
+
+  override def equals(that: Any): Boolean = {
+    that match {
+      case that: GPAMark =>
+        this.getScale.equals(that.getScale) &&
+          this.intValue.equals(that.intValue)
+      case _ => false
+    }
+  }
 }
