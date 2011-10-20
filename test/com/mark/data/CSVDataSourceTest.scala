@@ -23,8 +23,9 @@ class CSVDataSourceTest extends FunSuite with ShouldMatchers {
 
   def files = List(
     // Grade Data 1
-    "/Users/julian/Documents/projects/mark/test/com/mark/data/grade-data-1.csv",
-    "/Users/julian/Documents/projects/mark/test/com/mark/data/grade-data-2.csv"
+    "test/com/mark/data/grade-data-1.csv",
+    // Grade Data 2
+    "test/com/mark/data/grade-data-2.csv"
   )
   def headers = List(
     // Grade Data 1
@@ -118,11 +119,11 @@ class CSVDataSourceTest extends FunSuite with ShouldMatchers {
     }
   }
 
-  test("Load grade data 1") {
+  test("Load and check grade data 1") {
      checkData(0)
   }
 
-  test("Load grade data 2") {
+  test("Load and check grade data 2") {
      checkData(1)
   }
 }
