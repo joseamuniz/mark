@@ -10,6 +10,20 @@ package com.mark.adt
  * @param scale The maximum score attainable in this assignment.
  */
 class GPAMark(score: Int, scale: Int) extends Mark {
+
+  require(scale > 0)
+
   override def intValue = score
   override def stringValue = score + "/" + scale
+
+  def getScale = scale
+
+  override def equals(that: Any): Boolean = {
+    that match {
+      case that: GPAMark =>
+        this.getScale.equals(that.getScale) &&
+          this.intValue.equals(that.intValue)
+      case _ => false
+    }
+  }
 }

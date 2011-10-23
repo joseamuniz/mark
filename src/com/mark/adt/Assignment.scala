@@ -9,7 +9,7 @@ package com.mark.adt
  * @param maxScore The maximum possible score that can be given to this homework
  * 
  */
-class Assignment(name : String, maxScore : Int) {
+class Assignment(name : String) {
 	/* 
 	 * TODO (jmunizn) 
 	 * 
@@ -18,4 +18,18 @@ class Assignment(name : String, maxScore : Int) {
 	 * assignments to their corresponding weights.  
 	 * 
 	 */
+
+  require(name != null)
+  require(name.length != 0)
+
+  def getName: String = name
+
+  override def toString: String = name
+
+  override def equals(that: Any): Boolean = {
+    that match {
+      case that: Assignment => this.getName.equals(that.getName)
+      case _ => false
+    }
+  }
 } 

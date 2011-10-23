@@ -10,28 +10,30 @@ import com.mark.adt._
  * grade formatting to be returned by the DataSource.
  *
  */
-
-/*
- * TODO: Need to figure out the syntax to specify that Marker should actually be 
- * a subclass of com.mark.adt.Mark 
- */
 trait GradeDataSource[M <: Mark] {
 
   /**
-   * Returns a list of all the graders that have graded at least one
-   * assignment in this datasource.
+   * Returns a set of all the graders that have graded at least one
+   * assignment in this data source.
    *
    * @return A (non-null) set of graders.
    */
-  def getGraders: Set[Grader];
+  def getGraders: Set[Grader]
 
   /**
-   * Returns a list of all the students that have at least one assignment
-   * graded in this datasource.
+   * Returns a set of all the students that have at least one assignment
+   * graded in this data source.
    *
    * @return A (non-null) set of graders.
    */
-  def getStudents: Set[Student];
+  def getStudents: Set[Student]
+
+  /**
+   * Returns a set of all the assignments
+   *
+   * @return A (non-null) set of assignments
+   */
+  def getAssignments: Set[Assignment]
 
   /**
    * Returns the grade recorded for student by grader on assignment.
@@ -44,4 +46,28 @@ trait GradeDataSource[M <: Mark] {
     student: Student,
     assignment: Assignment): Option[M]
 
+  /**
+   * Loads the grade data from the source described in the data descriptor
+   */
+  def loadData(descriptor: GradeDataDescriptor): Unit
+
+
+  def createMarks(
+    scoreMap: Map[(Grader, Student, Assignment), String],
+    maxScoreMap: Map[(Grader, Student, Assignment), String],
+    weightMap: Map[(Grader, Student, Assignment), String]): Unit
+}
+
+/**
+ * Provides a description of grade data source.
+ */
+trait GradeDataDescriptor
+
+/**
+ * Enumerates the different types of grade data.
+ */
+object GradeData extends Enumeration {
+  type GradeData = Value
+  val StudentData, GraderData, AssignmentData,
+    ScoreData, MaxScoreData, WeightData = Value
 }

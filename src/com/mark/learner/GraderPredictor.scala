@@ -26,5 +26,4 @@ trait GraderPredictor[M <: Mark] {
    * @param assignment assignment whose mark is to be predicted
    */
   def predict(student : Student, assignment : Assignment) : M
-  
 }
