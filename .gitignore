@@ -3,4 +3,5 @@ bin
 out/*
 .idea/*
 *.iml
-intellij-.mark.iml
+.classpath
+.project
