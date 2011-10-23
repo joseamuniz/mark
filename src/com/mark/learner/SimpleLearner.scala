@@ -6,7 +6,7 @@ import com.mark.adt.Assignment
 import com.mark.adt.Grader
 import com.mark.adt.Student
 import com.mark.data.GradeDataSource
-import com.mark.adt.Mark
+import com.mark.adt.Grade
 
 /**
  * A SimpleLearner does not perform any inferencing over the grades provided in
@@ -25,21 +25,22 @@ import com.mark.adt.Mark
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[M <: Mark] extends PredictorLearner[M] {
+class SimpleLearner[M <: Grade] extends PredictorLearner[M] {
 
-  def train(ds: GradeDataSource[M]): Map[Grader, GraderPredictor[M]] = {
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[M]] = {
     val map = HashMap[Grader, GraderPredictor[M]]()
     (ds getGraders).foreach(grader => map += (grader -> createPredictor(grader, ds)))
     map
   }
 
-  private def createPredictor(grader: Grader, ds: GradeDataSource[M]): GraderPredictor[M] = {
+  private def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[M] = {
     new GraderPredictor[M] {
       override def predict(student: Student, assignment: Assignment): M = {
-        ds getGrade (grader, student, assignment) match {
-          case Some(grade) => grade;
-          case None => throw new RuntimeException ("Unimplemented");
-        }
+        throw new RuntimeException("Alfredo")
+//        ds getGrade (grader, student, assignment) match {
+//          case Some(grade) => grade;
+//          case None => throw new RuntimeException ("Unimplemented");
+//        }
       }
     }
   }

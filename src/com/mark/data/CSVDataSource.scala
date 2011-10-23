@@ -20,7 +20,7 @@ import collection.mutable
  * The first row is reserved for the header. 
  * 
  */
-trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
+class CSVDataSource extends GradeDataSource {
 
   private var graders = Set[Grader]()
   private var students = Set[Student]()
@@ -38,6 +38,9 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
 	def getStudents: Set[Student] = students
 
   def getAssignments: Set[Assignment] = assignments
+
+  def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome] =
+    throw new RuntimeException("Julian")
 
   def loadData(descriptor: GradeDataDescriptor): Unit = {
     descriptor match {
@@ -82,11 +85,6 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
     graders = Set[Grader]() ++ graderSet
     students = Set[Student]() ++ studentSet
     assignments = Set[Assignment]() ++ assignmentSet
-
-    createMarks(
-      Map[(Grader, Student, Assignment), String]() ++ scoreMap,
-      Map[(Grader, Student, Assignment), String]() ++ maxScoreMap,
-      Map[(Grader, Student, Assignment), String]() ++ weightMap)
   }
 
   private def retrieveData(row: List[(GradeData, String)]): Unit = {
@@ -113,6 +111,26 @@ trait CSVDataSource[M <: Mark] extends GradeDataSource[M] {
     if (value.isEmpty) throw new IllegalArgumentException(
       gradeData.toString + " should not be empty")
   }
+
+//  private var marks = Map[(Grader, Student, Assignment), GPAGrade]()
+//
+//  def createMarks(
+//    scoreMap: Map[(Grader, Student, Assignment), String],
+//    maxScoreMap: Map[(Grader, Student, Assignment), String],
+//    weightMap: Map[(Grader, Student, Assignment), String]): Unit = {
+//
+//    val marksMap = mutable.Map[(Grader, Student, Assignment), GPAGrade]()
+//
+//    for (key <- scoreMap.keys) {
+//      val mark = new GPAGrade(
+//        scoreMap.getOrElse(key, throw new RuntimeException("Not a valid key")).toInt,
+//        maxScoreMap.getOrElse(key, throw new RuntimeException("Not a valid key")).toInt)
+//
+//      marksMap put (key, mark)
+//    }
+//
+//    marks = Map[(Grader, Student, Assignment), GPAGrade]() ++ marksMap
+//  }
 }
 
 case class CSVDataDescriptor(file: String, fields: List[GradeData])

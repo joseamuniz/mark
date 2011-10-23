@@ -3,7 +3,7 @@ package com.mark.adt
 /**
  * A grade given to a student on a particular assignment.
  */
-trait Mark {
+trait Grade {
 
   /**
    * Integral representation of the grade
@@ -19,5 +19,5 @@ trait Mark {
   /**
    * Adds the int values of two marks
    */
-  /* def +(mark: Mark): Int = intValue + mark intValue   */
+  /* def +(mark: Grade): Int = intValue + mark intValue   */
 }

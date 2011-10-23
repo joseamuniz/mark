@@ -9,7 +9,7 @@ package com.mark.adt
  * @param score The actual score represented by this mark.
  * @param scale The maximum score attainable in this assignment.
  */
-class GPAMark(score: Int, scale: Int) extends Mark {
+class GPAGrade(score: Int, scale: Int) extends Grade {
 
   require(scale > 0)
 
@@ -20,7 +20,7 @@ class GPAMark(score: Int, scale: Int) extends Mark {
 
   override def equals(that: Any): Boolean = {
     that match {
-      case that: GPAMark =>
+      case that: GPAGrade =>
         this.getScale.equals(that.getScale) &&
           this.intValue.equals(that.intValue)
       case _ => false

@@ -10,7 +10,7 @@ import com.mark.adt._
  * grade formatting to be returned by the DataSource.
  *
  */
-trait GradeDataSource[M <: Mark] {
+trait GradeDataSource {
 
   /**
    * Returns a set of all the graders that have graded at least one
@@ -41,21 +41,13 @@ trait GradeDataSource[M <: Mark] {
    * @return the desired grade (or null if the grade doesn't exist)
    * 		   in the required format.
    */
-  def getGrade(
-    grader: Grader,
-    student: Student,
-    assignment: Assignment): Option[M]
+  def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome]
 
   /**
    * Loads the grade data from the source described in the data descriptor
    */
   def loadData(descriptor: GradeDataDescriptor): Unit
 
-
-  def createMarks(
-    scoreMap: Map[(Grader, Student, Assignment), String],
-    maxScoreMap: Map[(Grader, Student, Assignment), String],
-    weightMap: Map[(Grader, Student, Assignment), String]): Unit
 }
 
 /**
