@@ -32,10 +32,13 @@ class MetricEmbedder[X] extends Embedder[X, Double] {
   /**
    * Converts a matrix representing points into a set of points
    *
+   * @param arrays A bi-dimensional array representing the output of the MDS
+   *               algorithm. Notice that the jth coordinate of the ith point
+   *               is given by array(i,j)
+   *
    * TODO: Again, can we do implicit conversion?
    */
   private def toPoints(array : Array[Array[Double]]) : Set[Point[Double]] = {
-    /*TODO: Comments*/
     def list = (array toList).transpose
     (list map (new Point[Double](_: _*))) toSet
   }

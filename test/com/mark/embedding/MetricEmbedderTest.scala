@@ -3,6 +3,7 @@ package com.mark.embedding
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 import com.mark.similarity.Distance
+import scala.Predef._
 
 
 /**
@@ -54,9 +55,15 @@ class MetricEmbedderTest extends FunSuite with ShouldMatchers {
       toDistance((from: String, to: String) => cities(from, to))) toList
 
     /* SF is closer to Chicago than SF is to Boston */
-    def bosPoint = output(0);
-    def chiPoint = output(1);
-    def sfPoint = output(2);
+    def bosPoint = output(0)
+
+   // def bosPoint = new Point(1626.4286352519002, 124396.93942586247)
+    def chiPoint = new Point(-670.902671999039, 51596.704335899856)
+    def sfPoint =  new Point(-1467.0792053679684, -109309.64871734759)
+
+    println("BOSTON " + bosPoint)
+    println("CHICAGO " + chiPoint)
+    println("SF" + sfPoint)
 
     def bosChi : Double =  (bosPoint.distanceTo(chiPoint))
     def sfBos  : Double =  (sfPoint.distanceTo(bosPoint))
