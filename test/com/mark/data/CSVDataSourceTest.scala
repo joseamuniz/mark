@@ -72,40 +72,39 @@ class CSVDataSourceTest extends FunSuite with ShouldMatchers {
   def marks = List(
     // Grade Data 1
     Map(
-      (Snape, Harry, PSet1) -> new GPAGrade(8, 10),
-      (Snape, Hermione, PSet1) -> new GPAGrade(10, 10),
-      (McGonagall, Ron, PSet1) -> new GPAGrade(7, 10)
+      (Harry, PSet1) -> (new GPAGrade(8, 10), Snape),
+      (Hermione, PSet1) -> (new GPAGrade(10, 10), Snape),
+      (Ron, PSet1) -> (new GPAGrade(7, 10), McGonagall)
     ),
     // Grade Data 2
     Map(
-      (Snape, Draco, Exam1) -> new GPAGrade(9, 10),
-      (Trelawney, Ron, PSet1) -> new GPAGrade(6, 10),
-      (McGonagall, Hermione, PSet1) -> new GPAGrade(10, 10)
+      (Draco, Exam1) -> (new GPAGrade(9, 10), Snape),
+      (Ron, PSet1) -> (new GPAGrade(6, 10), Trelawney),
+      (Hermione, PSet1) -> (new GPAGrade(10, 10), McGonagall)
     )
   )
 
   def checkData(testIndex: Int) {
-    throw new RuntimeException("Julian")
-//    val i = testIndex
-//    val dataDescriptor = new CSVDataDescriptor(files(i), headers(i))
-//    val dataSource = new GPAMarkDataSource
-//    dataSource.loadData(dataDescriptor)
-//
-//    dataSource.getStudents should have size (students(i).size)
-//    dataSource.getGraders should have size (graders(i).size)
-//    dataSource.getAssignments should have size (assignments(i).size)
-//
-//    shouldContain[Student](students(i), dataSource.getStudents)
-//    shouldNotContain[Student](studentsNeg(i), dataSource.getStudents)
-//    shouldContain[Grader](graders(i), dataSource.getGraders)
-//    shouldNotContain[Grader](gradersNeg(i), dataSource.getGraders)
-//    shouldContain[Assignment](assignments(i), dataSource.getAssignments)
-//    shouldNotContain[Assignment](assignmentsNeg(i), dataSource.getAssignments)
-//
-//    for (key <- marks(i).keys) {
-//      val dataSourceMark = dataSource.getGrade(key._1, key._2, key._3).get
-//      dataSourceMark should equal (marks(i).get(key).get)
-//    }
+    val i = testIndex
+    val dataDescriptor = new CSVDataDescriptor(files(i), headers(i))
+    val dataSource = DataSourceFactory.loadCSV(dataDescriptor)
+
+    dataSource.getStudents should have size (students(i).size)
+    dataSource.getGraders should have size (graders(i).size)
+    dataSource.getAssignments should have size (assignments(i).size)
+
+    shouldContain[Student](students(i), dataSource.getStudents)
+    shouldNotContain[Student](studentsNeg(i), dataSource.getStudents)
+    shouldContain[Grader](graders(i), dataSource.getGraders)
+    shouldNotContain[Grader](gradersNeg(i), dataSource.getGraders)
+    shouldContain[Assignment](assignments(i), dataSource.getAssignments)
+    shouldNotContain[Assignment](assignmentsNeg(i), dataSource.getAssignments)
+
+    for (key <- marks(i).keys) {
+      val dataSourceMark = dataSource.getGrade(key._1, key._2).get
+      dataSourceMark.getGrade should equal (marks(i).get(key).get._1)
+      dataSourceMark.getGrader should equal (marks(i).get(key).get._2)
+    }
   }
 
   def shouldContain[T](list: List[T], dataSourceSet: Set[T]) {
