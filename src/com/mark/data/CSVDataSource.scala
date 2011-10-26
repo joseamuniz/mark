@@ -65,7 +65,7 @@ class CSVDataSource extends GradeDataSource {
 
       val rowData = fields zip row
       // validate each input string
-      rowData.foreach((checkString _).tupled)
+      rowData.foreach((DataSourceUtil.checkString _).tupled)
       val dataMap = rowData.toMap[GradeData, String]
 
       // create objects and add them to lists
@@ -90,13 +90,6 @@ class CSVDataSource extends GradeDataSource {
     this.students = students.toSet[Student]
     this.assignments = assignments.toSet[Assignment]
     this.grades = grades.toMap[(Student, Assignment), GradeOutcome]
-  }
-
-  private def checkString(gradeData: GradeData, value: String): Unit = {
-    if (value == null) throw new IllegalArgumentException(
-      gradeData.toString + " should not be null")
-    if (value.isEmpty) throw new IllegalArgumentException(
-      gradeData.toString + " should not be empty")
   }
 }
 

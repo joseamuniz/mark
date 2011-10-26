@@ -1,13 +1,17 @@
 package com.mark.data
 
+import com.mark.data.GradeData._
+
 /**
- * Created by IntelliJ IDEA.
- * User: julian
- * Date: 10/25/11
- * Time: 11:55 PM
- * To change this template use File | Settings | File Templates.
+ * Utilities methods for data sources
  */
 
 object DataSourceUtil {
 
+  def checkString(gradeData: GradeData, value: String): Unit = {
+    if (value == null) throw new IllegalArgumentException(
+      gradeData.toString + " should not be null")
+    if (value.isEmpty) throw new IllegalArgumentException(
+      gradeData.toString + " should not be empty")
+  }
 }
