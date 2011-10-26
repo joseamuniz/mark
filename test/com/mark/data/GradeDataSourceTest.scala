@@ -1,8 +1,9 @@
 package com.mark.data
 
-import com.mark.adt.{GPAGrade, Assignment, Grader, Student}
+import com.mark.adt._
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.FunSuite
+import com.mark.data.GradeData._
 
 /**
  *
