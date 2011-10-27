@@ -3,8 +3,6 @@ import com.mark.adt._
 import au.com.bytecode.opencsv.CSVReader
 import java.io.FileReader
 import com.mark.data.GradeData._
-import collection.immutable.Set
-import collection.mutable
 
 /**
  * Reads the class gradebook from a CSV file encoded in UTF-8 format 
@@ -25,13 +23,7 @@ class CSVDataSource extends GradeDataSource {
   private var graders = Set[Grader]()
   private var students = Set[Student]()
   private var assignments = Set[Assignment]()
-
-  private val scoreMap = mutable.Map[(Grader, Student, Assignment), String]()
-  private val maxScoreMap = mutable.Map[(Grader, Student, Assignment), String]()
-  private val weightMap = mutable.Map[(Grader, Student, Assignment), String]()
-  private val graderSet = mutable.Set[Grader]()
-  private val studentSet = mutable.Set[Student]()
-  private val assignmentSet = mutable.Set[Assignment]()
+  private var grades = Map[(Student, Assignment), GradeOutcome]()
 
   def getGraders: Set[Grader] = graders
 	
@@ -40,7 +32,7 @@ class CSVDataSource extends GradeDataSource {
   def getAssignments: Set[Assignment] = assignments
 
   def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome] =
-    throw new RuntimeException("Julian")
+    grades get (student, assignment)
 
   def loadData(descriptor: GradeDataDescriptor): Unit = {
     descriptor match {
@@ -64,73 +56,41 @@ class CSVDataSource extends GradeDataSource {
     if (row == null) throw new RuntimeException("Input file " +
       "does not contain data")
 
-    scoreMap.clear()
-    maxScoreMap.clear()
-    weightMap.clear()
-    graderSet.clear()
-    studentSet.clear()
-    assignmentSet.clear()
+    var graders = List[Grader]()
+    var students = List[Student]()
+    var assignments = List[Assignment]()
+    var grades = List[((Student, Assignment), GradeOutcome)]()
 
     while (row != null) {
+
       val rowData = fields zip row
-      rowData.foreach((checkString _).tupled)
-      retrieveData(rowData)
+      // validate each input string
+      rowData.foreach((DataSourceUtil.checkString _).tupled)
+      val dataMap = rowData.toMap[GradeData, String]
+
+      // create objects and add them to lists
+      val grade = new GPAGrade(
+        dataMap(ScoreData).toInt,
+        dataMap(MaxScoreData).toInt)
+
+      graders ::= new Grader(dataMap(GraderData))
+      students ::= new Student(dataMap(StudentData))
+      assignments ::= new Assignment(dataMap(AssignmentData))
+      grades ::= ((students.head, assignments.head),
+        new GradeOutcome(grade, graders.head))
+
+      // get next row
       row = reader.readNext()
     }
 
+    // close csv reader
     reader.close()
 
-    // create immutable sets of graders and students from the
-    // sets we just populated
-    graders = Set[Grader]() ++ graderSet
-    students = Set[Student]() ++ studentSet
-    assignments = Set[Assignment]() ++ assignmentSet
+    this.graders = graders.toSet[Grader]
+    this.students = students.toSet[Student]
+    this.assignments = assignments.toSet[Assignment]
+    this.grades = grades.toMap[(Student, Assignment), GradeOutcome]
   }
-
-  private def retrieveData(row: List[(GradeData, String)]): Unit = {
-
-    val data = mutable.Map[GradeData, String]()
-    row.foreach(value => data += value)
-
-    val key = (new Grader(data(GraderData)),
-      new Student(data(StudentData)),
-      new Assignment(data(AssignmentData)))
-
-    scoreMap put (key, data(ScoreData))
-    maxScoreMap put (key, data(MaxScoreData))
-    weightMap put (key, data(WeightData))
-
-    graderSet += key._1
-    studentSet += key._2
-    assignmentSet += key._3
-  }
-
-  private def checkString(gradeData: GradeData, value: String): Unit = {
-    if (value == null) throw new IllegalArgumentException(
-      gradeData.toString + " should not be null")
-    if (value.isEmpty) throw new IllegalArgumentException(
-      gradeData.toString + " should not be empty")
-  }
-
-//  private var marks = Map[(Grader, Student, Assignment), GPAGrade]()
-//
-//  def createMarks(
-//    scoreMap: Map[(Grader, Student, Assignment), String],
-//    maxScoreMap: Map[(Grader, Student, Assignment), String],
-//    weightMap: Map[(Grader, Student, Assignment), String]): Unit = {
-//
-//    val marksMap = mutable.Map[(Grader, Student, Assignment), GPAGrade]()
-//
-//    for (key <- scoreMap.keys) {
-//      val mark = new GPAGrade(
-//        scoreMap.getOrElse(key, throw new RuntimeException("Not a valid key")).toInt,
-//        maxScoreMap.getOrElse(key, throw new RuntimeException("Not a valid key")).toInt)
-//
-//      marksMap put (key, mark)
-//    }
-//
-//    marks = Map[(Grader, Student, Assignment), GPAGrade]() ++ marksMap
-//  }
 }
 
 case class CSVDataDescriptor(file: String, fields: List[GradeData])
