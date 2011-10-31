@@ -22,17 +22,17 @@ import com.mark.adt._
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[M <: Grade] extends PredictorLearner[GPAGrade] {
+class SimpleLearner[M <: Grade] extends PredictorLearner[M] {
 
-  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[GPAGrade]] = {
-    val map = HashMap[Grader, GraderPredictor[GPAGrade]]()
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[M]] = {
+    val map = HashMap[Grader, GraderPredictor[M]]()
     (ds getGraders).foreach(grader => map += (grader -> createPredictor(grader, ds)))
     map
   }
 
-   def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[GPAGrade] = {
-    new GraderPredictor[GPAGrade] {
-      override def predict(student: Student, assignment: Assignment): GPAGrade = {
+   def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[M] = {
+    new GraderPredictor[M] {
+      override def predict(student: Student, assignment: Assignment): M = {
         throw new RuntimeException("Alfredo")
 //        ds getGrade (grader, student, assignment) match {
 //          case Some(grade) => grade;

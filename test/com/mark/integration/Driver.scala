@@ -42,14 +42,14 @@ class Driver {
     }
 
     /* Given the predictors, find the set of predictors */
-    def embed(
-      predictors : Set[(Grader, GraderPredictor[GPAGrade])],
+    def embed[M <: Grade] (
+      predictors : Set[(Grader, GraderPredictor[M])],
       ds : GradeDataSource) = {
 
-      val embedder = new MetricEmbedder[GraderPredictor[GPAGrade]]()
+      val embedder = new MetricEmbedder[GraderPredictor[M]]()
       val points = embedder.embed(
         predictors.map({case (grader,predictor) => predictor}),
-        new CorrelationDistance[GPAGrade](ds))
+        new CorrelationDistance[M](ds))
 
       predictors.map({case (grader,predictor) => grader}) zip points
     }
