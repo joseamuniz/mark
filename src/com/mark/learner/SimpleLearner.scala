@@ -2,11 +2,8 @@ package com.mark.learner
 
 import scala.collection.mutable.Map
 import scala.collection.mutable.HashMap
-import com.mark.adt.Assignment
-import com.mark.adt.Grader
-import com.mark.adt.Student
 import com.mark.data.GradeDataSource
-import com.mark.adt.Grade
+import com.mark.adt._
 
 /**
  * A SimpleLearner does not perform any inferencing over the grades provided in
@@ -25,17 +22,17 @@ import com.mark.adt.Grade
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[M <: Grade] extends PredictorLearner[M] {
+class SimpleLearner[M <: Grade] extends PredictorLearner[GPAGrade] {
 
-  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[M]] = {
-    val map = HashMap[Grader, GraderPredictor[M]]()
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[GPAGrade]] = {
+    val map = HashMap[Grader, GraderPredictor[GPAGrade]]()
     (ds getGraders).foreach(grader => map += (grader -> createPredictor(grader, ds)))
     map
   }
 
-  private def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[M] = {
-    new GraderPredictor[M] {
-      override def predict(student: Student, assignment: Assignment): M = {
+   def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[GPAGrade] = {
+    new GraderPredictor[GPAGrade] {
+      override def predict(student: Student, assignment: Assignment): GPAGrade = {
         throw new RuntimeException("Alfredo")
 //        ds getGrade (grader, student, assignment) match {
 //          case Some(grade) => grade;
