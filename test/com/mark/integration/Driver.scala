@@ -41,7 +41,7 @@ class Driver {
         (grader, l createPredictor(grader,ds))
     }
 
-    /* Given the predictors, find the set of predictors */
+    /* Given the predictors, find the set of points */
     def embed[M <: Grade] (
       predictors : Set[(Grader, GraderPredictor[M])],
       ds : GradeDataSource) = {
