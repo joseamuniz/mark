@@ -26,7 +26,7 @@ class CorrelationDistance[M <: GPAGrade](gradeDataSource: GradeDataSource)
     val gradesList: Iterable[(Double, Double)] =
       for(student <- gradeDataSource.getStudents;
         assignment <- gradeDataSource.getAssignments)
-          yield ((from.predict(student, assignment).intValue.toDouble,
+           yield ((from.predict(student, assignment).intValue.toDouble,
             to.predict(student, assignment).intValue.toDouble))
 
     1.0 - abs(correlation(gradesList))

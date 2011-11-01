@@ -31,7 +31,7 @@ class SimpleLearner[G <: GPAGrade] extends PredictorLearner[G] {
     graderPredictorMap
   }
 
-  private def createPredictor(grader: Grader, ds: GradeDataSource):
+  def createPredictor(grader: Grader, ds: GradeDataSource):
   GraderPredictor[G] = {
     new GraderPredictor[G] {
 
