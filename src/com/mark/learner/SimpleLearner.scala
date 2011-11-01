@@ -2,11 +2,8 @@ package com.mark.learner
 
 import scala.collection.mutable.Map
 import scala.collection.mutable.HashMap
-import com.mark.adt.Assignment
-import com.mark.adt.Grader
-import com.mark.adt.Student
 import com.mark.data.GradeDataSource
-import com.mark.adt.Grade
+import com.mark.adt._
 
 /**
  * A SimpleLearner does not perform any inferencing over the grades provided in
@@ -25,22 +22,48 @@ import com.mark.adt.Grade
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[M <: Grade] extends PredictorLearner[M] {
+class SimpleLearner[G <: GPAGrade] extends PredictorLearner[G] {
 
-  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[M]] = {
-    val map = HashMap[Grader, GraderPredictor[M]]()
-    (ds getGraders).foreach(grader => map += (grader -> createPredictor(grader, ds)))
-    map
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[G]] = {
+    val graderPredictorMap = HashMap[Grader, GraderPredictor[G]]()
+    (ds getGraders).foreach(grader => graderPredictorMap += (grader ->
+      createPredictor(grader, ds)))
+    graderPredictorMap
   }
 
-  private def createPredictor(grader: Grader, ds: GradeDataSource): GraderPredictor[M] = {
-    new GraderPredictor[M] {
-      override def predict(student: Student, assignment: Assignment): M = {
-        throw new RuntimeException("Alfredo")
-//        ds getGrade (grader, student, assignment) match {
-//          case Some(grade) => grade;
-//          case None => throw new RuntimeException ("Unimplemented");
-//        }
+  private def createPredictor(grader: Grader, ds: GradeDataSource):
+  GraderPredictor[G] = {
+    new GraderPredictor[G] {
+
+      override def predict(student: Student, assignment: Assignment): G = {
+        var avgByGrader = 0
+        var avgByGraderScale = 0
+        var marksMatched = 0
+        for(assignment <- ds.getAssignments){
+          ds getGrade(student, assignment) match {
+            case Some(grade) => if(grade.getGrader.equals(grader)) {
+              avgByGrader += grade.getGrade.intValue
+              avgByGraderScale += grade.getGrade.getScale
+              marksMatched = marksMatched + 1
+            }
+
+          }
+        }
+
+        if(marksMatched == 0) throw new RuntimeException("Cannot create " +
+          "predictor because marker did not mark any assignment for given " +
+          "student.")
+
+        val avgGpaByGrader = new GPAGrade(avgByGrader / marksMatched,
+                                          avgByGraderScale / marksMatched)
+
+
+        throw new RuntimeException("")
+        //ds.getGrade(student, assignment) match{
+          //case Some(grade) if(grade.getGrader.equals(grader)) => grade.getGrade
+          //case _ => avgGpaByGrader
+        //}
+
       }
     }
   }

@@ -1,9 +1,8 @@
 package com.mark.learner
-import com.mark.adt.Student
-import com.mark.adt.Assignment
-import com.mark.adt.Grade
 
-/** 
+import com.mark.adt.{GPAGrade, Student, Assignment}
+
+/**
  * A GraderPredictor is a random variable G(s,a) that associates a student s and
  * an assignment a with the hypothetical grade grader G would have given s on 
  * assignment a. 
@@ -15,7 +14,7 @@ import com.mark.adt.Grade
  * variables.  
  * 
  */
-trait GraderPredictor[M <: Grade] {
+trait GraderPredictor[G] {
 
   /**
    * Returns the predicted mark for the given student on the given assignment. 
@@ -25,5 +24,5 @@ trait GraderPredictor[M <: Grade] {
    * @param student student whose mark is to be predicted
    * @param assignment assignment whose mark is to be predicted
    */
-  def predict(student : Student, assignment : Assignment) : M
+  def predict(student : Student, assignment : Assignment) : G
 }

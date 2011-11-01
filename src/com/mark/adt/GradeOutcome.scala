@@ -4,7 +4,7 @@ package com.mark.adt
  *
  */
 
-class GradeOutcome(grade: Grade, grader: Grader) {
+class GradeOutcome(grade: GPAGrade, grader: Grader) {
 
   def getGrade = grade
   def getGrader = grader

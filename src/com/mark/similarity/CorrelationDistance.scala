@@ -1,9 +1,9 @@
 package com.mark.similarity
 import com.mark.learner.GraderPredictor
-import com.mark.adt.Grade
 import scala.math._
 import com.mark.data.GradeDataSource
 import collection.mutable.ListBuffer
+import com.mark.adt.{GPAGrade, Grade}
 
 /**
  * Determines the distance between two GraderPredictors G(s,a) 
@@ -19,7 +19,7 @@ import collection.mutable.ListBuffer
  * 
  * 
  */
-class CorrelationDistance[M <: Grade](gradeDataSource: GradeDataSource)
+class CorrelationDistance[M <: GPAGrade](gradeDataSource: GradeDataSource)
   extends Distance[GraderPredictor[M], Double]{
 
   def apply(from : GraderPredictor[M], to: GraderPredictor[M]): Double = {

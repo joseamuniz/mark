@@ -1,9 +1,8 @@
 package com.mark.learner
 
-import com.mark.adt.Grader
 import com.mark.data.GradeDataSource
 import scala.collection.mutable.Map
-import com.mark.adt.Grade
+import com.mark.adt.{GPAGrade, Grader}
 
 /**
  * A PredictorLearner generates a GraderPredictor for each grader in some
@@ -15,6 +14,6 @@ import com.mark.adt.Grade
  * predictors? What's the usual Scala style for this?
  *
  */
-trait PredictorLearner[M <: Grade] {
-  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[M]]
+trait PredictorLearner[G] {
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[G]]
 }
