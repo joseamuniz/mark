@@ -7,7 +7,7 @@ package com.mark.data
 
 class CSVDataSourceTest extends GradeDataSourceTest {
 
-  def files = List(
+   def files = List(
     // Grade Data 1
     "test/com/mark/data/grade-data-1.csv",
     // Grade Data 2
