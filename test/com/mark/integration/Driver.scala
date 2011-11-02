@@ -5,7 +5,7 @@ import com.mark.data.{GradeDataSource, CSVDataDescriptor, DataSourceFactory}
 import com.mark.embedding.MetricEmbedder
 import com.mark.learner.{GraderPredictor, SimpleLearner}
 import com.mark.similarity.CorrelationDistance
-import com.mark.adt.{Grade, Grader, GPAGrade}
+import com.mark.adt.{Grader, GPAGrade}
 
 /**
  * Given a path to a DataSource CSV file, print a
@@ -42,16 +42,16 @@ class Driver {
     }
 
     /* Given the predictors, find the set of points */
-    def embed[M <: Grade] (
-      predictors : Set[(Grader, GraderPredictor[M])],
+    def embed (
+      predictors : Set[(Grader, GraderPredictor)],
       ds : GradeDataSource) = {
 
-      //val embedder = new MetricEmbedder[GraderPredictor[M]]()
-      //val points = embedder.embed(
-        //predictors.map({case (grader,predictor) => predictor}),
-        //new CorrelationDistance[M](ds))
+      val embedder = new MetricEmbedder[GraderPredictor]()
+      val points = embedder.embed(
+        predictors.map({case (grader,predictor) => predictor}),
+        new CorrelationDistance(ds))
 
-      //predictors.map({case (grader,predictor) => grader}) zip points
+      predictors.map({case (grader,predictor) => grader}) zip points
     }
 
     val ds = getDS;

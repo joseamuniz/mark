@@ -7,7 +7,7 @@ import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import com.mark.data._
 import com.mark.data.GradeData._
-import com.mark.adt.{GPAGrade, Grade, Grader}
+import com.mark.adt.{GPAGrade, Grader}
 
 class SimpleLearnerTest extends AssertionsForJUnit {
 
@@ -16,7 +16,7 @@ class SimpleLearnerTest extends AssertionsForJUnit {
 
   private var grader: Grader = _
   private var dataSource: GradeDataSource = _
-  private var simpleLearner: SimpleLearner[GPAGrade] = _
+  private var simpleLearner: SimpleLearner = _
 
   @Test def testReturnsDatasourceValue() {
     val map = this.simpleLearner.train(dataSource)
@@ -29,6 +29,6 @@ class SimpleLearnerTest extends AssertionsForJUnit {
   @Before def setUp() {
     val dataDescriptor = new CSVDataDescriptor(dataFile, header)
     this.dataSource = DataSourceFactory.loadCSV(dataDescriptor)
-    this.simpleLearner = new SimpleLearner[GPAGrade]()
+    this.simpleLearner = new SimpleLearner()
   }
 }

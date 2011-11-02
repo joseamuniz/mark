@@ -14,7 +14,7 @@ import com.mark.adt.{GPAGrade, Student, Assignment}
  * variables.  
  * 
  */
-trait GraderPredictor[G] {
+trait GraderPredictor {
 
   /**
    * Returns the predicted mark for the given student on the given assignment. 
@@ -24,5 +24,5 @@ trait GraderPredictor[G] {
    * @param student student whose mark is to be predicted
    * @param assignment assignment whose mark is to be predicted
    */
-  def predict(student : Student, assignment : Assignment) : G
+  def predict(student : Student, assignment : Assignment) : GPAGrade
 }

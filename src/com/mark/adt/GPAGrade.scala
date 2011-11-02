@@ -9,12 +9,12 @@ package com.mark.adt
  * @param score The actual score represented by this mark.
  * @param scale The maximum score attainable in this assignment.
  */
-class GPAGrade(score: Int, scale: Int) extends Grade {
+class GPAGrade(score: Int, scale: Int) {
 
   require(scale > 0)
 
-  override def intValue = score
-  override def stringValue = score + "/" + scale
+  def intValue = score
+  def stringValue = score + "/" + scale
 
   def getScale = scale
 

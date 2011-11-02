@@ -22,20 +22,20 @@ import com.mark.adt._
  * the average grade the grader gave him/her.
  *
  */
-class SimpleLearner[G <: GPAGrade] extends PredictorLearner[G] {
+class SimpleLearner extends PredictorLearner {
 
-  def train(ds: GradeDataSource): Map[Grader, GraderPredictor[G]] = {
-    val graderPredictorMap = HashMap[Grader, GraderPredictor[G]]()
+  def train(ds: GradeDataSource): Map[Grader, GraderPredictor] = {
+    val graderPredictorMap = HashMap[Grader, GraderPredictor]()
     (ds getGraders).foreach(grader => graderPredictorMap += (grader ->
       createPredictor(grader, ds)))
     graderPredictorMap
   }
 
   def createPredictor(grader: Grader, ds: GradeDataSource):
-  GraderPredictor[G] = {
-    new GraderPredictor[G] {
+  GraderPredictor = {
+    new GraderPredictor {
 
-      override def predict(student: Student, assignment: Assignment): G = {
+      override def predict(student: Student, assignment: Assignment): GPAGrade = {
         var avgByGrader = 0
         var avgByGraderScale = 0
         var marksMatched = 0
@@ -57,12 +57,10 @@ class SimpleLearner[G <: GPAGrade] extends PredictorLearner[G] {
         val avgGpaByGrader = new GPAGrade(avgByGrader / marksMatched,
                                           avgByGraderScale / marksMatched)
 
-
-        throw new RuntimeException("")
-        //ds.getGrade(student, assignment) match{
-          //case Some(grade) if(grade.getGrader.equals(grader)) => grade.getGrade
-          //case _ => avgGpaByGrader
-        //}
+        ds.getGrade(student, assignment) match{
+          case Some(grade) if(grade.getGrader.equals(grader)) => grade.getGrade
+          case _ => avgGpaByGrader
+        }
 
       }
     }

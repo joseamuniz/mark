@@ -48,9 +48,9 @@ class CorrelationDistanceTest extends FunSuite with ShouldMatchers{
   }
 
   test("should produce correlation 0.7544237083454246 using data source"){
-    val simpleLearner = new SimpleLearner[GPAGrade]
+    val simpleLearner = new SimpleLearner
     val predictorsMap = simpleLearner.train(dataSource)
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     println(predictorsMap)
 
     println(markers(0))
@@ -63,31 +63,31 @@ class CorrelationDistanceTest extends FunSuite with ShouldMatchers{
   }
 
   test("should produce correlation 1 with exactly same grades"){
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     corrDistance.correlation(marks zip marks) should be === 1.0
   }
 
   test("should produce correlation -1 with exactly opposite grades"){
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     corrDistance.correlation(marks zip marks.reverse) should be === -1.0
     corrDistance.correlation(marks.reverse zip marks) should be === -1.0
   }
 
   test("should return NaN when all grades are the same for one of the markers"){
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     corrDistance.correlation(marks zip allSameMark).isNaN should be === true
     corrDistance.correlation(allSameMark zip marks).isNaN should be === true
   }
 
   test("should produce correlation 0.7544237083454246"){
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     corrDistance.correlation(marker1 zip marker2) should be === 0.7544237083454246
     corrDistance.correlation(marker2 zip marker1) should be === 0.7544237083454246
   }
 
 
   test("should produce correlation -0.795076668955559"){
-    val corrDistance = new CorrelationDistance[GPAGrade](dataSource)
+    val corrDistance = new CorrelationDistance(dataSource)
     corrDistance.correlation(marker1 zip marker2.reverse) should be === -0.795076668955559
     corrDistance.correlation(marker1.reverse zip marker2) should be === -0.795076668955559
   }

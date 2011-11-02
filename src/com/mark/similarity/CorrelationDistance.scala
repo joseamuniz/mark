@@ -3,7 +3,7 @@ import com.mark.learner.GraderPredictor
 import scala.math._
 import com.mark.data.GradeDataSource
 import collection.mutable.ListBuffer
-import com.mark.adt.{GPAGrade, Grade}
+import com.mark.adt.{GPAGrade}
 
 /**
  * Determines the distance between two GraderPredictors G(s,a) 
@@ -19,10 +19,10 @@ import com.mark.adt.{GPAGrade, Grade}
  * 
  * 
  */
-class CorrelationDistance[M <: GPAGrade](gradeDataSource: GradeDataSource)
-  extends Distance[GraderPredictor[M], Double]{
+class CorrelationDistance(gradeDataSource: GradeDataSource)
+  extends Distance[GraderPredictor, Double]{
 
-  def apply(from : GraderPredictor[M], to: GraderPredictor[M]): Double = {
+  def apply(from : GraderPredictor, to: GraderPredictor): Double = {
     val gradesList: Iterable[(Double, Double)] =
       for(student <- gradeDataSource.getStudents;
         assignment <- gradeDataSource.getAssignments)
