@@ -70,7 +70,7 @@ object Driver {
     " Where file.csv is a file containing grades \n "
   }
 
-  def main(args: Array[String]) : Int = {
+  def main(args: Array[String])  {
     if (args.length != 1) {
       println(usageString)
       WRONG_ARGUMENTS_RET
