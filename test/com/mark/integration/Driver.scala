@@ -72,22 +72,17 @@ class Driver {
 
 object Driver {
 
-  val WRONG_ARGUMENTS_RET = -1;
-  val SUCCESS_RET = 0;
-
   def usageString = {
     " Driver file.csv                            \n "
     " Where file.csv is a file containing grades \n "
   }
 
-  def main(args: Array[String]) : Int = {
+  def main(args: Array[String]) {
     if (args.length != 1) {
       println(usageString)
-      WRONG_ARGUMENTS_RET
     }
 
     val d = new Driver
     println(d generatePlot args.head)
-    SUCCESS_RET
   }
 }
