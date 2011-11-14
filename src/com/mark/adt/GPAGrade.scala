@@ -26,4 +26,6 @@ class GPAGrade(score: Int, scale: Int) {
       case _ => false
     }
   }
+
+  override def hashCode = ((score toDouble)/scale) hashCode
 }

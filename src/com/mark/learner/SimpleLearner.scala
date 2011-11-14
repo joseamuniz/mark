@@ -35,6 +35,8 @@ class SimpleLearner extends PredictorLearner {
   GraderPredictor = {
     new GraderPredictor {
 
+      override def toString = "Predictor(" + grader + ")"
+
       override def predict(student: Student, assignment: Assignment): GPAGrade = {
         var avgByGrader = 0
         var avgByGraderScale = 0

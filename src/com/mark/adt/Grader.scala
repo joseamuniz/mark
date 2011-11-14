@@ -21,4 +21,6 @@ class Grader (name: String) {
       case _ => false
     }
   }
+
+  override def hashCode = getName hashCode
 }

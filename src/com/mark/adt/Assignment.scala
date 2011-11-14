@@ -32,4 +32,6 @@ class Assignment(name : String) {
       case _ => false
     }
   }
+
+  override def hashCode = getName hashCode
 } 

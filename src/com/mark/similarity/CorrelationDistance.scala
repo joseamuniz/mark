@@ -2,8 +2,6 @@ package com.mark.similarity
 import com.mark.learner.GraderPredictor
 import scala.math._
 import com.mark.data.GradeDataSource
-import collection.mutable.ListBuffer
-import com.mark.adt.{GPAGrade}
 
 /**
  * Determines the distance between two GraderPredictors G(s,a) 
@@ -24,12 +22,12 @@ class CorrelationDistance(gradeDataSource: GradeDataSource)
 
   def apply(from : GraderPredictor, to: GraderPredictor): Double = {
     val gradesList: Iterable[(Double, Double)] =
-      for(student <- gradeDataSource.getStudents;
-        assignment <- gradeDataSource.getAssignments)
+      for(student <- gradeDataSource.getStudents.toList;
+        assignment <- gradeDataSource.getAssignments.toList)
            yield ((from.predict(student, assignment).intValue.toDouble,
             to.predict(student, assignment).intValue.toDouble))
 
-    1.0 - abs(correlation(gradesList))
+    1.0 - correlation(gradesList)
   }
 
   def correlation(tuples: Iterable[(Double, Double)]): Double = {

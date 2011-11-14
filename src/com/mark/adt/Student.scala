@@ -20,4 +20,6 @@ class Student(name: String) {
       case _ => false
     }
   }
+
+  override def hashCode = 1
 }
