@@ -51,5 +51,7 @@ class Point[N : Numeric](args: N*) {
   override def toString =
       "Point(" + (coordinates mkString(", ")) + ")";
 
+
+  def getCoordinates = coordinates;
 }
 
