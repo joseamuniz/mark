@@ -80,6 +80,7 @@ object Driver {
   def main(args: Array[String]) {
     if (args.length != 1) {
       println(usageString)
+      return
     }
 
     val d = new Driver
