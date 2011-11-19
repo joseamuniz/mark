@@ -2,10 +2,10 @@ package com.mark.integration
 
 import com.mark.data.GradeData._
 import com.mark.data.{GradeDataSource, CSVDataDescriptor, DataSourceFactory}
-import com.mark.embedding.MetricEmbedder
 import com.mark.learner.{GraderPredictor, SimpleLearner}
 import com.mark.similarity.CorrelationDistance
 import com.mark.adt.{Grader, GPAGrade}
+import com.mark.embedding.{Point, MetricEmbedder}
 
 /**
  * Given a path to a DataSource CSV file, print a
@@ -55,29 +55,34 @@ class Driver {
     }
 
     val ds = getDS;
-    embed(getPredictors(ds), ds)
+    val points : Set[(Grader,Point[Double])] = embed(getPredictors(ds), ds)
+    var strRet = "hold off;\n"
+
+    (for ((grader, point) <- points)
+      strRet += "text( " + point(0) +
+                    ", " + point(1) +
+                    ", '" + grader.getName +
+                    "' );\n" )
+
+    strRet
+
   }
 
 }
 
 object Driver {
 
-  val WRONG_ARGUMENTS_RET = -1;
-  val SUCCESS_RET = 0;
-
   def usageString = {
     " Driver file.csv                            \n "
     " Where file.csv is a file containing grades \n "
   }
 
-  def main(args: Array[String])  {
+  def main(args: Array[String]) {
     if (args.length != 1) {
       println(usageString)
-      WRONG_ARGUMENTS_RET
     }
 
     val d = new Driver
     println(d generatePlot args.head)
-    SUCCESS_RET
   }
 }

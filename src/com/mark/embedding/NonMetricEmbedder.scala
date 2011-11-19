@@ -8,6 +8,6 @@ import com.mark.similarity.Distance
 class NonMetricEmbedder[X,Y] extends Embedder[X,Y]{
 
   def embed(points : Set[X], distance : Distance[X, Y]) : Set[Point[Y]] =
-    null;
+    throw new RuntimeException("Not yet implemented")
 
 }

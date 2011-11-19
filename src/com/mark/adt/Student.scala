@@ -21,5 +21,5 @@ class Student(name: String) {
     }
   }
 
-  override def hashCode = 1
+  override def hashCode = name hashCode
 }

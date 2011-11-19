@@ -9,9 +9,9 @@ class CSVDataSourceTest extends GradeDataSourceTest {
 
    def files = List(
     // Grade Data 1
-    "test/com/mark/data/grade-data-1.csv",
+    "test/com/mark/example/grade-data-1.csv",
     // Grade Data 2
-    "test/com/mark/data/grade-data-2.csv"
+    "test/com/mark/example/grade-data-2.csv"
   )
 
   test("Load and check grade data 1") {

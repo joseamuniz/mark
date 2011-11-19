@@ -16,6 +16,18 @@ class Point[N : Numeric](args: N*) {
   private val dim = args.size
   private val num = implicitly[Numeric[N]]
 
+
+  /**
+   * Returns the value of the ith dimension of the point
+   */
+  def apply(i: Int) = {
+    coordinates (i);
+  }
+
+
+  /**
+   * Returns the Euclidean distance between this point and the input point
+   */
   def distanceTo = {
     def distance = new Distance[Point[N], Double] {
       /**

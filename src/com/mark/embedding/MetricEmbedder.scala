@@ -11,22 +11,22 @@ import com.mark.similarity.Distance
 class MetricEmbedder[X] extends Embedder[X, Double] {
 
   def embed(points: Set[X], distance: Distance[X,Double]): Set[Point[Double]] = {
-    def input = toArray(points, distance)
-    def output =  MDSJ.classicalScaling(input)
-    toPoints(output);
+    def pointList = points toList;
+    def input =  toArray(points toList, distance)
+    toPoints(MDSJ.classicalScaling(input))
 
 
   }
 
   /**
-   * Converts a set of points into an bidimensional array of distances
+   * Converts a set of points into a two-dimensional array of distances
    *                                                                  ∑
    * TODO: Should this be made an implicit conversion too?
    */
-  private def toArray(points: Set[X], distance: (X, X) => Double) =
-    (for (from <- points) yield
-      ((for (to <- points) yield distance(from, to)) toArray)
-    ) toArray
+  private def toArray(pointList: List[X], distance: (X, X) => Double) =
+    Array.tabulate(pointList size, pointList size) (
+        (x,y) => if (x == y) 0 else distance(poinstList(x), pointList(y))
+    )
 
 
   /**
