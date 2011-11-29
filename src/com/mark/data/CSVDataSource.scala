@@ -56,36 +56,45 @@ class CSVDataSource extends GradeDataSource {
     if (row == null) throw new RuntimeException("Input file " +
       "does not contain data")
 
+    // instantiate temporary lists to put the grader,
+    // student, and assignment objects
     var graders = List[Grader]()
     var students = List[Student]()
     var assignments = List[Assignment]()
+    // instantiate temporary list to put tuples of the form
+    // ((Student, Assignment), GradeOutcome)
     var grades = List[((Student, Assignment), GradeOutcome)]()
 
     while (row != null) {
 
       val rowData = fields zip row
-      // validate each input string
+      // validate each input string - it should not be null nor empty
       rowData.foreach((DataSourceUtil.checkString _).tupled)
+      // given the row data, create a mapping from
+      // grade data fields to string values
       val dataMap = rowData.toMap[GradeData, String]
 
-      // create objects and add them to lists
+      // create a new grade using the values from the data map
       val grade = new GPAGrade(
         dataMap(ScoreData).toInt,
         dataMap(MaxScoreData).toInt)
 
+      // create new grader, student, assignment, and grade outcome objects.
+      // add each new object to its corresponding list
       graders ::= new Grader(dataMap(GraderData))
       students ::= new Student(dataMap(StudentData))
       assignments ::= new Assignment(dataMap(AssignmentData))
       grades ::= ((students.head, assignments.head),
         new GradeOutcome(grade, graders.head))
 
-      // get next row
+      // get next row data
       row = reader.readNext()
     }
 
     // close csv reader
     reader.close()
 
+    // instantiate global fields using the temporary lists
     this.graders = graders.toSet[Grader]
     this.students = students.toSet[Student]
     this.assignments = assignments.toSet[Assignment]
