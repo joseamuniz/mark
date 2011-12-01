@@ -11,8 +11,9 @@ import com.mark.similarity.Distance
 class MetricEmbedder[X] extends Embedder[X, Double] {
 
   def embed(points: Set[X], distance: Distance[X,Double]): Set[Point[Double]] = {
-    def pointList = points toList;
     def input =  toArray(points toList, distance)
+    println(input.deep.mkString("\n"))
+
     toPoints(MDSJ.classicalScaling(input))
 
 
@@ -24,8 +25,13 @@ class MetricEmbedder[X] extends Embedder[X, Double] {
    * TODO: Should this be made an implicit conversion too?
    */
   private def toArray(pointList: List[X], distance: (X, X) => Double) =
+  //Add some random noise to increase very close distances by a little.
+  // This keeps MDSJ from throwing NaNs.
+
     Array.tabulate(pointList size, pointList size) (
-        (x,y) => if (x == y) 0 else distance(poinstList(x), pointList(y))
+        (x,y) => if (x == y) 0 else
+                            (10   * math.random +
+                             1000 * math.max(0, distance(pointList(x), pointList(y))))
     )
 
 
@@ -40,6 +46,6 @@ class MetricEmbedder[X] extends Embedder[X, Double] {
      */
   private def toPoints(array : Array[Array[Double]]) : Set[Point[Double]] = {
     def list = (array toList).transpose
-    (list map (new Point[Double](_: _*))) toSet
+    (list map (new Point[Double](_: _*))).toSet
   }
 }
