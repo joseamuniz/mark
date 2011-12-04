@@ -17,7 +17,7 @@ import com.mark.data.GradeData._
  * The first row is reserved for the header.
  */
 
-class ExcelDataSource extends GradeDataSource {
+class ExcelDataSource(dataDescriptor: ExcelDataDescriptor) extends GradeDataSource {
 
   private var graders = Set[Grader]()
   private var students = Set[Student]()
@@ -32,10 +32,6 @@ class ExcelDataSource extends GradeDataSource {
 
   def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome] =
     grades get (student, assignment)
-
-  def loadData(descriptor: GradeDataDescriptor): Unit = {
-    throw new RuntimeException("method loadData(descriptor: GradeDataDescriptor) has not been implemented")
-  }
 }
 
 case class ExcelDataDescriptor(file: String)

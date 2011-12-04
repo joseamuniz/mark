@@ -1,11 +1,11 @@
 package com.mark.integration
 
 import com.mark.data.GradeData._
-import com.mark.data.{GradeDataSource, CSVDataDescriptor, DataSourceFactory}
 import com.mark.learner.{GraderPredictor, SimpleLearner}
 import com.mark.similarity.CorrelationDistance
 import com.mark.adt.{Grader, GPAGrade}
 import com.mark.embedding.{Point, MetricEmbedder}
+import com.mark.data.{CSVDataSource, GradeDataSource, CSVDataDescriptor}
 
 /**
  * Given a path to a DataSource CSV file, print a
@@ -30,7 +30,7 @@ class Driver {
    /* Obtain data source from file and descriptor */
     def getDS = {
       val dataDescriptor = new CSVDataDescriptor(path, stdHeader)
-      DataSourceFactory loadCSV dataDescriptor
+      new CSVDataSource(dataDescriptor)
     }
 
     /* Pass data source to learner */

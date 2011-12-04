@@ -42,12 +42,6 @@ trait GradeDataSource {
    * 		   in the required format.
    */
   def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome]
-
-  /**
-   * Loads the grade data from the source described in the data descriptor
-   */
-  def loadData(descriptor: GradeDataDescriptor): Unit
-
 }
 
 /**

@@ -17,14 +17,14 @@ class CSVDataSourceTest extends GradeDataSourceTest {
   test("Load and check grade data 1") {
     val i = 0
     val dataDescriptor = new CSVDataDescriptor(files(i), headers(i))
-    val dataSource = DataSourceFactory.loadCSV(dataDescriptor)
+    val dataSource = new CSVDataSource(dataDescriptor)
     checkData(i, dataSource)
   }
 
   test("Load and check grade data 2") {
     val i = 1
     val dataDescriptor = new CSVDataDescriptor(files(i), headers(i))
-    val dataSource = DataSourceFactory.loadCSV(dataDescriptor)
+    val dataSource = new CSVDataSource(dataDescriptor)
     checkData(i, dataSource)
   }
 }

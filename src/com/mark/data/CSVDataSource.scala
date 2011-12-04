@@ -18,12 +18,16 @@ import com.mark.data.GradeData._
  * The first row is reserved for the header. 
  * 
  */
-class CSVDataSource extends GradeDataSource {
+class CSVDataSource(dataDescriptor: CSVDataDescriptor) extends GradeDataSource {
 
   private var graders = Set[Grader]()
   private var students = Set[Student]()
   private var assignments = Set[Assignment]()
   private var grades = Map[(Student, Assignment), GradeOutcome]()
+
+  dataDescriptor match {
+    case CSVDataDescriptor(file, fields) => loadData(file, fields)
+  }
 
   def getGraders: Set[Grader] = graders
 	
@@ -33,14 +37,6 @@ class CSVDataSource extends GradeDataSource {
 
   def getGrade(student: Student, assignment: Assignment): Option[GradeOutcome] =
     grades get (student, assignment)
-
-  def loadData(descriptor: GradeDataDescriptor): Unit = {
-    descriptor match {
-      case CSVDataDescriptor(file, fields) => loadData(file, fields)
-      case _ => throw new IllegalArgumentException("CSVDataSource.loadData() " +
-        "does not support this descriptor: " + descriptor)
-    }
-  }
 
   private def loadData(file: String, fields: List[GradeData]): Unit = {
 

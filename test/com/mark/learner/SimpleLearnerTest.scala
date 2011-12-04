@@ -28,7 +28,7 @@ class SimpleLearnerTest extends AssertionsForJUnit {
 
   @Before def setUp() {
     val dataDescriptor = new CSVDataDescriptor(dataFile, header)
-    this.dataSource = DataSourceFactory.loadCSV(dataDescriptor)
+    this.dataSource = new CSVDataSource(dataDescriptor)
     this.simpleLearner = new SimpleLearner()
   }
 }
