@@ -11,7 +11,7 @@ import com.mark.adt.{GPAGrade, Grader}
 
 class SimpleLearnerTest extends AssertionsForJUnit {
 
-  private val dataFile = "test/com/mark/data/grade-data-1.csv"
+  private val dataFile = "test/com/mark/example/grade-data-1.csv"
   private val header = List(StudentData, GraderData, AssignmentData, ScoreData, MaxScoreData, WeightData)
 
   private var grader: Grader = _
