@@ -6,6 +6,7 @@ import com.mark.similarity.CorrelationDistance
 import com.mark.adt.{Grader, GPAGrade}
 import com.mark.embedding.{Point, MetricEmbedder}
 import com.mark.data.{CSVDataSource, GradeDataSource, CSVDataDescriptor}
+import com.mark.web.GoogleScatterChart
 
 /**
  * Given a path to a DataSource CSV file, print a
@@ -57,6 +58,10 @@ class Driver {
     val ds = getDS;
     val points : Set[(Grader,Point[Double])] = embed(getPredictors(ds), ds)
     var strRet = "hold off;\n"
+
+    // testing, not final version
+    val chart = new GoogleScatterChart(points)
+    println(chart getUrl)
 
     (for ((grader, point) <- points)
       strRet += "text( " + point(0) +
