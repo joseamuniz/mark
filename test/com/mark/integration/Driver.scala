@@ -7,6 +7,8 @@ import com.mark.adt.{Grader, GPAGrade}
 import com.mark.embedding.{Point, MetricEmbedder}
 import com.mark.data.{CSVDataSource, GradeDataSource, CSVDataDescriptor}
 import com.mark.web.GoogleScatterChart
+import java.awt.Desktop
+import java.net.URI
 
 /**
  * Given a path to a DataSource CSV file, print a
@@ -57,20 +59,10 @@ class Driver {
 
     val ds = getDS;
     val points : Set[(Grader,Point[Double])] = embed(getPredictors(ds), ds)
-    var strRet = "hold off;\n"
 
     // testing, not final version
     val chart = new GoogleScatterChart("Grader Similarity", points)
-    println(chart getUrl)
-
-    (for ((grader, point) <- points)
-      strRet += "text( " + point(0) +
-                    ", " + point(1) +
-                    ", '" + grader.getName +
-                    "' );\n" )
-
-    strRet
-
+    chart getUrl
   }
 
 }
@@ -89,6 +81,14 @@ object Driver {
     }
 
     val d = new Driver
-    println(d generatePlot args.head)
+    val chartUrl = d generatePlot args.head
+    println(chartUrl)
+
+    val desktop: Desktop = Desktop.getDesktop
+    if (desktop.isSupported(Desktop.Action.BROWSE)) {
+      desktop.browse(new URI(chartUrl.replace("|", "%7C")))
+    } else {
+      println("Opening a browser page is not supported in this system")
+    }
   }
 }
