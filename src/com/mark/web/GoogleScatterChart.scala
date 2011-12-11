@@ -9,46 +9,56 @@ import com.mark.embedding.Point
 
 class GoogleScatterChart(title: String, points: Set[(Grader,Point[Double])]) {
 
+  val AxisRangeMargin = 0.10
+
   val pointList = points.map(t => t._2).toList
   val xmax = getMax(pointList, 0)
   val xmin = getMin(pointList, 0)
   val ymax = getMax(pointList, 1)
   val ymin = getMin(pointList, 1)
-  val xmargin = (xmax - xmin)*0.10
-  val ymargin = (ymax - ymin)*0.10
+  val xmargin = (xmax - xmin)*AxisRangeMargin
+  val ymargin = (ymax - ymin)*AxisRangeMargin
   val xRange = new Point(xmin - xmargin, xmax + xmargin)
   val yRange = new Point(ymin - ymargin, ymax + ymargin)
 
-  val chartUrl = new GoogleChartUrl(
+  val chartUrl = new GoogleScatterChartUrl(
     title,
     pointList,
     points.map(t => t._1.getName).toList,
     List(xRange, yRange))
+
+  def getUrl = chartUrl.getUrl
 
   private def getMax(points: List[Point[Double]], index: Int) =
     points.foldLeft(Double.MinValue)((maxValue, p) => p(index).max(maxValue))
 
   private def getMin(points: List[Point[Double]], index: Int) =
     points.foldLeft(Double.MaxValue)((minValue, p) => p(index).min(minValue))
-
-  def getUrl = chartUrl.getUrl
 }
 
-class GoogleChartUrl(
+/**
+ * Class to build the Google Scatter Chart URL
+ */
+
+class GoogleScatterChartUrl(
     title: String,
     dataPoints: List[Point[Double]],
     dataLabels: List[String],
-    dataScale: List[Point[Double]]) {
+    axisRange: List[Point[Double]]) {
 
+  // constant values used to write the URL
   val BaseUrl = "https://chart.googleapis.com/chart?"
   val ParameterSeparator = "&"
   val SeriesSeparator = "|"
+  val SizeSeparator = "x"
   val Equal = "="
   val Space = " "
   val EscapedSpace = "+"
   val Coma = ","
 
-  val chartType = "s"
+  // constant values that define the type and style of the chart
+  val chartType = "s" // scatter chart
+  val dataFormatTag = "t:" // text format
   val axes = List("x", "y")
   val width = 500
   val height = 400
@@ -57,11 +67,14 @@ class GoogleChartUrl(
     "CC0099","0033CC","99FF00","FF9900",
     "660099","009999","FFFF00","FF6600")
 
-  val axisRange = dataScale
+  // do not use the default scaling nor automatic scaling (chds=a)
+  // instead define the data scale to be the same as the axis range
+  // provided in the constructor
+  val dataScale = axisRange
 
   def getType = List(GoogleChartUrlTag.Type, chartType)
   def getTitle = List(GoogleChartUrlTag.Title, title.replaceAll(Space, EscapedSpace))
-  def getSize = List(GoogleChartUrlTag.Size, width.toString + "x" + height.toString)
+  def getSize = List(GoogleChartUrlTag.Size, width.toString + SizeSeparator + height.toString)
   def getColor = {
     val string = color.take(dataPoints.size).mkString(SeriesSeparator)
     List(GoogleChartUrlTag.Color, string)
@@ -74,7 +87,7 @@ class GoogleChartUrl(
     val string = dataPoints.map(p => p(0)).mkString(Coma) +
       SeriesSeparator +
       dataPoints.map(p => p(1)).mkString(Coma)
-    List(GoogleChartUrlTag.Data, "t:" + string)
+    List(GoogleChartUrlTag.Data, dataFormatTag + string)
   }
 
   def getDataScale = {
@@ -99,6 +112,10 @@ class GoogleChartUrl(
   def getUrl = BaseUrl + ParameterSeparator +
     allParameters.map(param => param.mkString(Equal)).mkString(ParameterSeparator)
 }
+
+/**
+ * Enumerates the Google Chart URL parameter tags
+ */
 
 object GoogleChartUrlTag {
   val Type = "cht"
