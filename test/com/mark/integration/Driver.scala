@@ -60,7 +60,7 @@ class Driver {
     var strRet = "hold off;\n"
 
     // testing, not final version
-    val chart = new GoogleScatterChart(points)
+    val chart = new GoogleScatterChart("Grader Similarity", points)
     println(chart getUrl)
 
     (for ((grader, point) <- points)

@@ -7,9 +7,7 @@ import com.mark.embedding.Point
  * Representation of a Google Scatter Chart
  */
 
-class GoogleScatterChart(points: Set[(Grader,Point[Double])]) {
-
-  val chartUrl = new GoogleChartUrl
+class GoogleScatterChart(title: String, points: Set[(Grader,Point[Double])]) {
 
   val pointList = points.map(t => t._2).toList
   val xmax = getMax(pointList, 0)
@@ -21,9 +19,11 @@ class GoogleScatterChart(points: Set[(Grader,Point[Double])]) {
   val xRange = new Point(xmin - xmargin, xmax + xmargin)
   val yRange = new Point(ymin - ymargin, ymax + ymargin)
 
-  chartUrl.setData(pointList)
-  chartUrl.setDataLabel(points.map(t => t._1.getName).toList)
-  chartUrl.setDataScale(List(xRange, yRange))
+  val chartUrl = new GoogleChartUrl(
+    title,
+    pointList,
+    points.map(t => t._1.getName).toList,
+    List(xRange, yRange))
 
   private def getMax(points: List[Point[Double]], index: Int) =
     points.foldLeft(Double.MinValue)((maxValue, p) => p(index).max(maxValue))
@@ -34,7 +34,12 @@ class GoogleScatterChart(points: Set[(Grader,Point[Double])]) {
   def getUrl = chartUrl.getUrl
 }
 
-class GoogleChartUrl {
+class GoogleChartUrl(
+    title: String,
+    dataPoints: List[Point[Double]],
+    dataLabels: List[String],
+    dataScale: List[Point[Double]]) {
+
   val BaseUrl = "https://chart.googleapis.com/chart?"
   val ParameterSeparator = "&"
   val SeriesSeparator = "|"
@@ -45,29 +50,25 @@ class GoogleChartUrl {
 
   val chartType = "s"
   val axes = List("x", "y")
-  val title = "Grader Similarity"
   val width = 500
   val height = 400
-  val color = List("FF0000","0000FF","00FF00")
-  var dataPoints: List[Point[Double]] = List()
-  var dataLabel: List[String] = List()
-  var dataScale: List[Point[Double]] = List()
-  var axisRange: List[Point[Double]] = List()
+  val color = List(
+    "FF0000","330099","00CC00","FFCC00",
+    "CC0099","0033CC","99FF00","FF9900",
+    "660099","009999","FFFF00","FF6600")
 
-  def setData(dataPoints: List[Point[Double]]) {this.dataPoints = dataPoints}
-  def setDataLabel(dataLabel: List[String]) {this.dataLabel = dataLabel}
-  def setDataScale(dataScale: List[Point[Double]]) {
-    this.dataScale = dataScale
-    this.axisRange = dataScale
-  }
+  val axisRange = dataScale
 
   def getType = List(GoogleChartUrlTag.Type, chartType)
   def getTitle = List(GoogleChartUrlTag.Title, title.replaceAll(Space, EscapedSpace))
   def getSize = List(GoogleChartUrlTag.Size, width.toString + "x" + height.toString)
-  def getColor = List(GoogleChartUrlTag.Color, color.mkString(SeriesSeparator))
+  def getColor = {
+    val string = color.take(dataPoints.size).mkString(SeriesSeparator)
+    List(GoogleChartUrlTag.Color, string)
+  }
   def getAxes = List(GoogleChartUrlTag.Axes, axes.mkString(Coma))
   def getDataLabel = List(GoogleChartUrlTag.DataLabel,
-    dataLabel.mkString(SeriesSeparator).replaceAll(Space, EscapedSpace))
+    dataLabels.mkString(SeriesSeparator).replaceAll(Space, EscapedSpace))
 
   def getData = {
     val string = dataPoints.map(p => p(0)).mkString(Coma) +
@@ -92,8 +93,8 @@ class GoogleChartUrl {
     List(GoogleChartUrlTag.AxisRange, string)
   }
 
-  def allParameters = List(getType, getTitle, getSize,
-    getData, getDataScale, getAxes, getAxisRange)
+  def allParameters = List(getType, getTitle, getSize, getColor,
+    getData, getDataLabel, getDataScale, getAxes, getAxisRange)
 
   def getUrl = BaseUrl + ParameterSeparator +
     allParameters.map(param => param.mkString(Equal)).mkString(ParameterSeparator)
