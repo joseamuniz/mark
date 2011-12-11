@@ -57,17 +57,11 @@ class Driver {
 
     val ds = getDS;
     val points : Set[(Grader,Point[Double])] = embed(getPredictors(ds), ds)
-    var strRet = "hold off;\n"
 
     // testing, not final version
     val chart = new GoogleScatterChart("Grader Similarity", points)
-    println(chart getUrl)
+    val strRet = (chart getUrl)
 
-    (for ((grader, point) <- points)
-      strRet += "text( " + point(0) +
-                    ", " + point(1) +
-                    ", '" + grader.getName +
-                    "' );\n" )
 
     strRet
 

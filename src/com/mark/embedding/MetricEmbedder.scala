@@ -12,7 +12,6 @@ class MetricEmbedder[X] extends Embedder[X, Double] {
 
   def embed(points: Set[X], distance: Distance[X,Double]): Set[Point[Double]] = {
     def input =  toArray(points toList, distance)
-    println(input.deep.mkString("\n"))
 
     toPoints(MDSJ.classicalScaling(input))
 
